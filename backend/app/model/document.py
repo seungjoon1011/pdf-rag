@@ -17,3 +17,7 @@ class Document(Base):
     filename: Mapped[str] = mapped_column(
         String(255)
     )
+
+    filepath: Mapped[str] = mapped_column(
+        String(255)
+    )

@@ -8,5 +8,6 @@ class DocumentResponse(BaseModel):
     id: int
     title: str
     filename: str
-
+    filepath: str
+    
     model_config = ConfigDict(from_attribute=True)
