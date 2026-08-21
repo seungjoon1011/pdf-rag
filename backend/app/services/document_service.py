@@ -1,10 +1,11 @@
 from app.schemas.document import DocumentCreate
+from app.services.chunk_service import save_chunks, split_text
+from app.services.pdf_service import extract_text
 from sqlalchemy.orm import Session
 from app.model.document import Document
 from sqlalchemy import select
 from fastapi import UploadFile
 from pathlib import Path
-
 
 BASE_DIR = Path(__file__).resolve().parents[3]
 
@@ -28,10 +29,22 @@ def upload_document(
         filename=file.filename,
         filepath=str(file_path),
     )
-
     db.add(document)
     db.commit()
     db.refresh(document)
+
+    pages = extract_text(file_path)
+
+    for page_number,text in enumerate(pages):
+        chunks = split_text(text)
+
+        save_chunks(
+            db,
+            document.id,
+            page_number,
+            chunks,
+        )
+    db.commit()
 
     return document
 
