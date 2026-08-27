@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.api.documents import router as document_router
 from app.api.search import router as search_router
+from app.api.chat import router as chat_router
 from app.core.database import Base,engine
 from app.model.document import Document
 from app.model.document_chunk import DocumentChunk
@@ -20,6 +21,7 @@ app.add_middleware(
 )
 app.include_router(document_router)
 app.include_router(search_router)
+app.include_router(chat_router)
 
 @app.get("/")
 def root():
